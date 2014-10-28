@@ -1,6 +1,6 @@
 ---
 
-- hosts: localhost
+- hosts: machine
   remote_user: root
   sudo: true
   roles:
