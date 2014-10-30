@@ -1,0 +1,7 @@
+#!/bin/sh
+
+{% for variable_name, value in ENV.iteritems() %}
+export {{ variable_name }}="{{ value }}"
+{% endfor %}
+
+export PYTHONPATH=$PYTHONPATH:{{project_path}}

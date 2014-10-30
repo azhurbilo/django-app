@@ -1,0 +1,64 @@
+server {
+    listen              80 default_server;
+    server_name         '{{ django_app_site_url }}';
+
+
+    access_log {{ nginx_access_log }};
+    error_log {{ nginx_error_log }};
+
+    location /static/ {
+        alias   {{ nginx_static_dir }};
+        add_header Vary Accept-Encoding;
+        access_log off;
+        gzip_static on;
+        expires max;
+        add_header Cache-Control public;
+    }
+
+    location /media/ {
+        alias   {{ nginx_media_dir }}/;
+        add_header Vary Accept-Encoding;
+        access_log off;
+        gzip_static on;
+        expires max;
+        add_header Cache-Control public;
+    }
+
+    location / {
+
+        proxy_pass http://{{ gunicorn_bind_app }};
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+
+        client_max_body_size       100m;
+        client_body_buffer_size    128k;
+
+        client_body_temp_path      /tmp/client_body_temp;
+
+        proxy_connect_timeout      60s;
+        proxy_send_timeout         90s;
+        proxy_read_timeout         120s;
+        # proxy_send_lowat           12000;
+
+        proxy_buffer_size          4k;
+        proxy_buffers              4 32k;
+        proxy_busy_buffers_size    64k;
+        proxy_temp_file_write_size 64k;
+        proxy_temp_path /tmp/nginx-temp;
+    }
+
+    # Error pages
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root {{ application_path }}/templates/;
+    }
+
+    # Error pages
+    error_page 404 /404.html;
+    location = /404.html {
+        root {{ application_path }}/templates/;
+    }
+
+}

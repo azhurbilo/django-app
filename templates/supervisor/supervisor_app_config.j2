@@ -1,0 +1,19 @@
+{% include 'supervisor_config.j2' %}
+
+
+[program:{{ django_application_name }}]
+command={{ virtualenv_path }}/bin/gunicorn -c {{ gunicorn_run_script }} wsgi:application
+directory={{ application_path }}
+user = {{ app_user }}
+autostart=True
+autorestart=True
+
+stdout_logfile={{ supervisor_app_access_log }}
+stdout_logfile_maxbytes=10MB
+stdout_logfile_backups=5
+
+stderr_logfile={{ supervisor_app_error_log }}
+stderr_logfile_maxbytes=10MB
+stderr_logfile_backups=5
+
+environment = {% include 'environment' %}
