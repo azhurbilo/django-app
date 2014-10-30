@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define "test" do |test|
-    test.vm.network "private_network", ip: "192.168.33.11"
+    test.vm.network "private_network", ip: "192.168.33.3"
   end
 end
 

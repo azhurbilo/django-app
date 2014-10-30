@@ -11,8 +11,5 @@ install:
   # Install Ansible.
   - pip install ansible
 
-  # Install required dependencies.
-  - ansible-galaxy install -r requirements.txt
-
 script:
-  - ./build.sh
+  - ./build.sh local

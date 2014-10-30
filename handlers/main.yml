@@ -1,2 +1,20 @@
 ---
 # handlers file for django-app
+
+- name: restart nginx
+  service: name=nginx state=restarted enabled=yes
+
+- name: reload nginx
+  service: name=nginx state=reloaded
+
+- name: restart memcached
+  service: name=memcached state=restarted
+
+- name: add supervisord to autostart
+  shell: update-rc.d supervisord defaults
+
+- name: update supervisord
+  shell: supervisorctl update
+
+- name: restart application
+  supervisorctl: name={{ django_application_name }} state=restarted

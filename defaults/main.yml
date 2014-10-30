@@ -1,2 +1,50 @@
 ---
 # defaults file for django-app
+
+django_app_role_required_vars:
+  - django_app_git_url
+  - django_application_name
+  - django_app_git_private_key
+  - django_app_site_url
+
+ENV:
+  DJANGO_SETTINGS_MODULE: '{{django_application_name}}.settings'
+
+db_engine: 'mysql'
+
+# User
+app_user: 'django'
+app_user_home: '/home/{{ app_user }}'
+
+# Application settings.
+git_branch_name: 'master'
+virtualenv_path: '{{ app_user_home }}/env/{{ django_application_name }}'
+project_path: '{{ app_user_home }}/{{django_application_name}}'
+application_path: '{{ project_path }}/{{django_application_name}}'
+requirements_file: '{{ project_path }}/requirements.txt'
+
+# Supervisor
+supervisor_log_dir: '/var/log/supervisor'
+supervisor_socket: '/var/run/supervisor.sock'
+supervisor_pid: '/var/run/supervisord.pid'
+supervisor_log: '{{supervisor_log_dir}}/supervisord.log'
+supervisor_app_access_log: "{{ supervisor_log_dir }}/{{django_application_name}}_access.log"
+supervisor_app_error_log: "{{ supervisor_log_dir }}/{{django_application_name}}_error.log"
+
+# Gunicorn
+gunicorn_run_script: '{{virtualenv_path}}/gunicorn_start.py'
+gunicorn_bind_app: '127.0.0.1:8000'
+gunicorn_run_dir: '/var/run/gunicorn'
+gunicorn_pid: '{{gunicorn_run_dir}}/{{django_application_name}}_gunicorn.pid'
+gunicorn_log_dir: '/var/log/gunicorn'
+gunicorn_access_log: '{{gunicorn_log_dir}}/{{django_application_name}}_access.log'
+gunicorn_error_log: '{{gunicorn_log_dir}}/{{django_application_name}}_error.log'
+
+#Nginx
+nginx_http_port: 80
+nginx_https_port: 443
+# nginx automatically add logrotate rule >> /var/log/nginx/*.log
+nginx_access_log: '/var/log/nginx/{{django_application_name}}_access.log'
+nginx_error_log: '/var/log/nginx/{{django_application_name}}_error.log'
+nginx_static_dir: '{{ project_path }}/static/'
+nginx_media_dir: '/mnt/{{django_application_name}}/media'

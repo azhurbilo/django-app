@@ -1,2 +1,22 @@
 ---
 # tasks file for django-app
+
+- fail: msg="Variable '{{ item }}' is not defined in playbook vars"
+  when: item not in vars
+  with_items: django_app_role_required_vars
+
+- include: user.yml
+- include: ssh.yml
+- include: virtualenv.yml
+
+- include: django_app.yml
+  when: django_app_git_url != 'new'
+
+- include: new_django_app.yml
+  when: django_app_git_url == 'new'
+
+- include: gunicorn.yml
+- include: memcached.yml
+- include: supervisor.yml
+- include: logrotate.yml
+- include: nginx.yml
