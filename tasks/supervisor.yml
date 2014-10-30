@@ -1,0 +1,28 @@
+---
+
+- name: base | create supervisor log folder
+  file: path={{ supervisor_log_dir }}
+        mode=744
+        state=directory
+
+- name: supervisor | install supervisor
+  pip: name=supervisor state=latest
+
+- name: supervisor | add supervisord init script
+  template: src=supervisor/supervisord_init.j2
+            dest=/etc/init.d/supervisord
+            mode=755
+  notify: add supervisord to autostart
+
+- name: supervisor | replace base supervisor config file
+  template: src=supervisor/supervisor_app_config.j2
+            dest=/etc/supervisord.conf
+  notify: update supervisord
+
+- name: supervisor | run supervisord
+  service: name=supervisord
+           state=started
+
+- name: supervisor | check app with Supervisor
+  supervisorctl: name={{ django_application_name }}
+                 state=present

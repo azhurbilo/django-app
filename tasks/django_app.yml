@@ -1,0 +1,67 @@
+---
+
+
+- name: django | add kids academy repo
+  sudo_user: '{{ app_user }}'
+  git: repo='{{git_url}}'
+       dest='{{project_path}}'
+       ssh_opts='-o StrictHostKeyChecking=no'
+       version='{{git_branch_name}}'
+  register: git_register_var
+  notify: restart application
+
+# version - can be a branch name, or a tag name.
+
+- name: django | install app requirements.txt
+  sudo_user: '{{ app_user }}'
+  pip: requirements={{requirements_file}}
+       virtualenv={{virtualenv_path}}
+
+- name: django | install latest version of pip packages
+  sudo_user: '{{ app_user }}'
+  pip: name={{item}} virtualenv={{virtualenv_path}} state=latest
+  with_items:
+    - setuptools
+    - requests
+    - ipython
+
+- name: django | register all mysql db
+  command: mysql -u {{ ENV["DB_USER"]}} -p{{ ENV["DB_PASSWORD"]}} --execute='SHOW TABLES IN {{ ENV["DB_NAME"]}}'
+  register: db_exist
+  changed_when: False
+  when: db_engine == mysql
+# this task will never report 'changed' status
+
+- name: django | run syncdb and migrate
+  django_manage:
+    command: '{{item}}'
+    app_path: '{{ application_path }}'
+    virtualenv: '{{ virtualenv_path }}'
+  with_items:
+     - syncdb
+     - migrate
+  environment: ENV
+  when: db_exist.stdout and git_register_var.changed == True
+
+- name: django | run collectstatic
+  django_manage:
+    command: collectstatic
+    app_path: '{{ application_path }}'
+    virtualenv: '{{ virtualenv_path }}'
+  register: collectstatic_result
+  environment: ENV
+  changed_when: "'0 static files copied to' not in collectstatic_result.out"
+
+- name: create media folder
+  file: path={{ nginx_media_dir }}
+        state=directory
+        owner={{app_user}}
+        group={{app_user}}
+        mode=744
+
+- name: base | install mysql client
+  apt: name={{item}} state=present
+  with_items:
+    - mysql-client
+    - python-mysqldb
+  when: db_engine == mysql

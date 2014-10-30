@@ -1,0 +1,27 @@
+---
+
+- name: nginx | install Nginx
+  apt: name=nginx state=present
+
+- name: nginx | add www-data user to {{app_user}} group
+  user: name=www-data groups={{app_user}} append=yes
+
+- name: nginx | create the Nginx configuration file
+  template: src=nginx/nginx_site_config.j2
+            dest=/etc/nginx/sites-available/{{ django_application_name }}
+            backup=yes
+  notify: reload nginx
+
+- name: nginx | ensure that the default site is disabled
+  command: rm /etc/nginx/sites-enabled/default
+           removes=/etc/nginx/sites-enabled/default
+  notify: reload nginx
+
+- name: nginx | ensure that the application site is enabled
+  command: ln -s /etc/nginx/sites-available/{{ django_application_name }}
+           /etc/nginx/sites-enabled/{{ django_application_name }}
+           creates=/etc/nginx/sites-enabled/{{ django_application_name }}
+  notify: reload nginx
+
+- name: nginx | ensure Nginx service is started
+  service: name=nginx state=started enabled=yes

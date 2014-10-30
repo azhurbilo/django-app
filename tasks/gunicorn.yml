@@ -1,0 +1,26 @@
+---
+
+- name: gunicorn | create gunicorn log folder
+  file: path={{ gunicorn_log_dir }}
+        mode=755
+        owner={{app_user}}
+        group={{app_user}}
+        state=directory
+
+- name: gunicorn | create gunicorn run folder
+  file: path={{ gunicorn_run_dir }}
+        mode=755
+        owner={{app_user}}
+        group={{app_user}}
+        state=directory
+
+- name: gunicorn | ensure gunicorn is installed
+  sudo_user: '{{ app_user }}'
+  pip: virtualenv={{ virtualenv_path }} name=gunicorn
+
+- name: gunicorn | create the Gunicorn script file
+  sudo_user: '{{ app_user }}'
+  template: src=gunicorn/gunicorn_start.py
+            dest={{ gunicorn_run_script }}
+            mode=755
+  notify: restart application

@@ -1,0 +1,28 @@
+---
+
+- name: django | install django
+  sudo_user: '{{ app_user }}'
+  pip: name=django version=1.7.1
+       virtualenv={{virtualenv_path}}
+
+- name: django | add shell script to run new project
+  template: src=new_django_proj.j2
+            dest={{app_user_home}}/new_django_proj.sh
+            owner={{app_user}}
+            group={{app_user}}
+            mode=744
+
+- name: django | create new django project
+  sudo_user: '{{ app_user }}'
+  shell: "{{app_user_home}}/new_django_proj.sh"
+  args:
+    creates: '{{project_path}}/'
+
+
+- name: django | init new project in git
+  sudo_user: '{{ app_user }}'
+  command: 'git init'
+  args:
+    chdir: '{{project_path}}/'
+    creates: '{{project_path}}/.git/'
+  tags: test

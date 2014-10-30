@@ -1,0 +1,21 @@
+---
+
+- name: ssh | creates .ssh directory
+  sudo_user: '{{ app_user }}'
+  file: path=~/.ssh/ state=directory
+
+- name: ssh | add ssh private key for git repo
+  sudo_user: '{{ app_user }}'
+  shell: echo '{{ django_app_git_private_key }}' > ~/.ssh/id_rsa
+  args:
+    creates: ~/.ssh/id_rsa
+
+- name: ssh | set permissions to git key
+  sudo_user: '{{ app_user }}'
+  file: path=~/.ssh/id_rsa
+        state=file
+        mode=600
+
+- name: ssh | add ssh config
+  sudo_user: '{{ app_user }}'
+  template: src=ssh/config dest=~/.ssh/config

@@ -1,0 +1,10 @@
+---
+
+- name: user | Creates directory
+  file: path={{app_user_home}} state=directory
+
+- name: user | Create the application user
+  user: name={{ app_user }} state=present home={{app_user_home}} createhome=yes
+
+- name: user | Set owner of that directory to your application
+  file: path={{app_user_home}} state=directory recurse=yes owner={{ app_user }} group={{ app_user }}
