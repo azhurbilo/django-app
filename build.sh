@@ -38,7 +38,7 @@ ansible-playbook -i tests/${INVENTORY_FILE} tests/test.yml > out.txt 2>&1
 cat out.txt
 
 cat out.txt | grep -q 'changed=0.*failed=0'\
-&& (echo 'Idempotence test: Success' && exit 0) || (echo 'Idempotence test: Fail' && exit 1)
+&& (echo 'Idempotence test: Success' && rm out.txt && exit 0) || (echo 'Idempotence test: Fail' && rm out.txt && exit 1)
 
 echo "=================="
 echo "SUCCESS"

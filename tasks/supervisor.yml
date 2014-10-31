@@ -2,7 +2,7 @@
 
 - name: base | create supervisor log folder
   file: path={{ supervisor_log_dir }}
-        mode=744
+        mode=755
         state=directory
 
 - name: supervisor | install supervisor

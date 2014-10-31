@@ -6,6 +6,11 @@
 - name: nginx | add www-data user to {{app_user}} group
   user: name=www-data groups={{app_user}} append=yes
 
+- name: nginx | add read permissions for nginx logs to all users
+  file: path=/var/log/nginx/
+        state=directory
+        mode=755
+
 - name: nginx | create the Nginx configuration file
   template: src=nginx/nginx_site_config.j2
             dest=/etc/nginx/sites-available/{{ django_application_name }}

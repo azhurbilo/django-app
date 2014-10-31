@@ -34,8 +34,7 @@ supervisor_app_error_log: "{{ supervisor_log_dir }}/{{django_application_name}}_
 # Gunicorn
 gunicorn_run_script: '{{virtualenv_path}}/gunicorn_start.py'
 gunicorn_bind_app: '127.0.0.1:8000'
-gunicorn_run_dir: '/var/run/gunicorn'
-gunicorn_pid: '{{gunicorn_run_dir}}/{{django_application_name}}_gunicorn.pid'
+gunicorn_pid: '/tmp/{{django_application_name}}_gunicorn.pid'
 gunicorn_log_dir: '/var/log/gunicorn'
 gunicorn_access_log: '{{gunicorn_log_dir}}/{{django_application_name}}_access.log'
 gunicorn_error_log: '{{gunicorn_log_dir}}/{{django_application_name}}_error.log'
