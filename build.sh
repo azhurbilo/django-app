@@ -25,15 +25,15 @@ ansible-galaxy install -r requirements.txt --force
 
 # Step 2:
 echo ">>> Step 2: check role/playbook syntax"
-ansible-playbook -i tests/${INVENTORY_FILE} tests/test.yml --syntax-check
+ansible-playbook -i ${INVENTORY_FILE} playbook.yml --syntax-check
 
 # Step 3:
 echo ">>> Step 3: run the role/playbook with ansible-playbook"
-ansible-playbook -i tests/${INVENTORY_FILE} tests/test.yml
+ansible-playbook -i ${INVENTORY_FILE} playbook.yml
 
 # Step 4:
 echo ">>> Step 4: run the role/playbook again, checking to make sure it's idempotent."
-ansible-playbook -i tests/${INVENTORY_FILE} tests/test.yml > out.txt 2>&1
+ansible-playbook -i ${INVENTORY_FILE} playbook.yml > out.txt 2>&1
 
 cat out.txt
 
