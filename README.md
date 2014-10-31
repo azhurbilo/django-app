@@ -39,7 +39,15 @@ If everything is Ok, you will see the output:
     SUCCESS
     ==================
       
-      
+
+Now your application is available on `http://192.168.33.3/`.
+   
+`build.sh` also run some additional time-consuming steps like:
+  
+* run the role/playbook again, checking to make sure it's idempotent (no changes).
+* reboot virtual machine
+* restart provisioning after machine reboot to make sure it's idempotent as well :smile:
+
 Of course you can run ansible and vagrant commands separately, that is more flexible than run build.sh script.
 
     vagrant up

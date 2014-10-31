@@ -18,5 +18,5 @@
 - include: gunicorn.yml
 - include: memcached.yml
 - include: supervisor.yml
-- include: logrotate.yml
 - include: nginx.yml
+- include: logrotate.yml
