@@ -32,6 +32,7 @@
   when: db_engine == mysql
 # this task will never report 'changed' status
 
+# TODO: syncdb is deleted from django 1.7
 - name: django | run syncdb and migrate
   django_manage:
     command: '{{item}}'
