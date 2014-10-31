@@ -13,4 +13,4 @@ galaxy_info:
   - development
   - web
 dependencies:
-   - { role: 'zhurbilo.base-ubuntu', base_ubuntu_language: python }
+   - { role: 'zhurbilo.base-ubuntu'}

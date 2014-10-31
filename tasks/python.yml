@@ -1,0 +1,22 @@
+---
+
+- name: python | install python packages
+  apt: name={{item}} state=present
+  with_items:
+    - python
+    - python-dev
+    - python-software-properties
+    - python-pip
+    - libmysqlclient-dev
+    - libxml2
+    - libxml2-dev
+    - libxslt1-dev
+    - libmemcached-dev
+    - libffi-dev
+    - libjpeg8-dev
+
+- name: python | update pip
+  pip: name={{item}} state=latest
+  with_items:
+    - pip
+    - setuptools

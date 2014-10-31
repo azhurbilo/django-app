@@ -33,7 +33,7 @@ To set up you new application environment run:
 
 If everything is Ok, you will see the output:
 
-    Idempotence test: Success
+    Idempotence test after reboot: Success
     
     ==================
     SUCCESS
@@ -61,13 +61,6 @@ Dependencies
 ------------
 
 - [zhurbilo.base-ubuntu](https://galaxy.ansible.com/list#/roles/2046)
-
-
-Also you can see in ./meta/main.yml that base-ubuntu role receive `base_ubuntu_language: python` parameter,
-which installed different system base python libraries. 
-
-    dependencies:
-       - { role: 'zhurbilo.base-ubuntu', base_ubuntu_language: python }
 
 For installing this roles run:
     

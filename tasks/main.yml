@@ -5,6 +5,7 @@
   when: item not in vars
   with_items: django_app_role_required_vars
 
+- include: python.yml
 - include: user.yml
 - include: ssh.yml
 - include: virtualenv.yml
