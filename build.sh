@@ -41,6 +41,9 @@ cat out.txt
 cat out.txt | grep -q 'changed=0.*failed=0'\
 && (echo 'Idempotence test: Success' && rm out.txt && exit 0) || (echo 'Idempotence test: Fail' && rm out.txt && exit 1)
 
+if [ "$1" = "vagrant" ]
+then
+
 # Step 5:
 echo ">>> Step 5: run the role/playbook again, after machine reboot to make sure it's idempotent as well =)"
 vagrant reload
@@ -51,6 +54,9 @@ cat out.txt
 
 cat out.txt | grep -q 'changed=0.*failed=0'\
 && (echo 'Idempotence test after reboot: Success' && rm out.txt && exit 0) || (echo 'Idempotence test after reboot: Fail' && rm out.txt && exit 1)
+
+fi
+
 
 echo "=================="
 echo "SUCCESS"

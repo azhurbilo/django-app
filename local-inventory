@@ -1,1 +1,1 @@
-machine ansible_connection=local
+machine ansible_connection=local travis=true

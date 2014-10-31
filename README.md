@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/azhurbilo/django-app.svg?branch=master)](https://travis-ci.org/azhurbilo/django-app)
+
 [![Galaxy](http://img.shields.io/badge/galaxy-zhurbilo.django--app-blue.svg?style=flat-square)](https://galaxy.ansible.com/list#/roles/2068)
 
 
