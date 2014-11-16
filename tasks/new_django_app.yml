@@ -16,7 +16,7 @@
   sudo_user: '{{ app_user }}'
   shell: "{{app_user_home}}/new_django_proj.sh"
   args:
-    creates: '{{project_path}}/'
+    creates: '{{project_path}}/{{ django_application_name }}/'
 
 
 - name: django | init new project in git

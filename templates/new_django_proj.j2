@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd {{ app_user_home }}
-{{ virtualenv_path }}/bin/django-admin.py startproject {{ django_application_name }}
+{{ virtualenv_path }}/bin/django-admin.py startproject {{ django_application_name }} {{ django_application_name }}

@@ -21,7 +21,7 @@ fi
 
 # Step 1:
 echo ">>> Step 1: Install required dependencies roles."
-ansible-galaxy install -r requirements.txt --force
+ansible-galaxy install -r ansible_requirements.txt --force
 
 # Step 2:
 echo ">>> Step 2: check role/playbook syntax"

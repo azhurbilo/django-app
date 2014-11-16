@@ -66,9 +66,9 @@ Dependencies
 
 For installing this roles run:
     
-    ansible-galaxy install -r requirements.txt --force
+    ansible-galaxy install -r ansible_requirements.txt --force
     
-`requirements.txt` contains roles with its versions, which should be uploaded from ansible-galaxy (github).
+`ansible_requirements.txt` contains roles with its versions, which should be uploaded from ansible-galaxy (github).
 
 
 Example Playbook
