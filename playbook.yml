@@ -4,7 +4,7 @@
   remote_user: root
   sudo: true
   vars:
-    - django_app_git_url: 'new'
+    - django_app_git_url: ''
     - django_application_name: 'project01'
     # With lookup module contents can be read from your local filesystem to get security data
     - django_app_git_private_key: "{{ lookup('file', '~/.ssh/github') }}"

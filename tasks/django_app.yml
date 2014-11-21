@@ -1,21 +1,50 @@
 ---
 
 
-- name: django | add kids academy repo
+- set_fact:
+    git_is_used: "{{'git@' in django_app_git_url}}"
+
+- set_fact:
+    git_is_not_used: "{{ not git_is_used | bool }}"
+
+- name: django | add repo
   sudo_user: '{{ app_user }}'
-  git: repo='{{git_url}}'
+  git: repo='{{django_app_git_url}}'
        dest='{{project_path}}'
        ssh_opts='-o StrictHostKeyChecking=no'
        version='{{git_branch_name}}'
   register: git_register_var
   notify: restart application
+  when: git_is_used
 
 # version - can be a branch name, or a tag name.
+
+- name: django | check requirements.txt
+  shell: "echo 'Django==1.7.1' > {{ requirements_file }}"
+  args:
+    chdir: '{{ project_path }}'
+    creates: '{{ requirements_file }}'
+  when: git_is_not_used
 
 - name: django | install app requirements.txt
   sudo_user: '{{ app_user }}'
   pip: requirements={{requirements_file}}
        virtualenv={{virtualenv_path}}
+
+- name: django | create new django project
+  sudo_user: '{{ app_user }}'
+  shell: "{{ virtualenv_path }}/bin/django-admin.py startproject {{ django_application_name }} {{ django_application_name }}"
+  args:
+    chdir: '{{ app_user_home }}'
+    creates: '{{ project_path }}/{{ django_application_name }}/'
+  when: git_is_not_used
+
+- name: django | add STATIC_ROOT to django settings.py
+  lineinfile: dest={{application_path}}/settings.py
+              state=present
+              regexp='^STATIC_ROOT'
+              line="STATIC_ROOT = '{{ nginx_static_dir }}'"
+  when: git_is_not_used
 
 - name: django | install latest version of pip packages
   sudo_user: '{{ app_user }}'
@@ -25,44 +54,13 @@
     - requests
     - ipython
 
-- name: django | register all mysql db
-  command: mysql -u {{ ENV["DB_USER"]}} -p{{ ENV["DB_PASSWORD"]}} --execute='SHOW TABLES IN {{ ENV["DB_NAME"]}}'
-  register: db_exist
-  changed_when: False
-  when: db_engine == mysql
-# this task will never report 'changed' status
-
-# TODO: syncdb is deleted from django 1.7
 - name: django | run syncdb and migrate
   django_manage:
     command: '{{item}}'
-    app_path: '{{ application_path }}'
+    app_path: '{{ project_path }}'
     virtualenv: '{{ virtualenv_path }}'
   with_items:
      - syncdb
      - migrate
+     - collectstatic
   environment: ENV
-  when: db_exist.stdout and git_register_var.changed == True
-
-- name: django | run collectstatic
-  django_manage:
-    command: collectstatic
-    app_path: '{{ application_path }}'
-    virtualenv: '{{ virtualenv_path }}'
-  register: collectstatic_result
-  environment: ENV
-  changed_when: "'0 static files copied to' not in collectstatic_result.out"
-
-- name: create media folder
-  file: path={{ nginx_media_dir }}
-        state=directory
-        owner={{app_user}}
-        group={{app_user}}
-        mode=744
-
-- name: base | install mysql client
-  apt: name={{item}} state=present
-  with_items:
-    - mysql-client
-    - python-mysqldb
-  when: db_engine == mysql

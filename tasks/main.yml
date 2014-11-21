@@ -8,16 +8,10 @@
 - include: python.yml
 - include: user.yml
 - include: ssh.yml
+- include: nginx.yml
 - include: virtualenv.yml
-
 - include: django_app.yml
-  when: django_app_git_url != 'new'
-
-- include: new_django_app.yml
-  when: django_app_git_url == 'new'
-
 - include: gunicorn.yml
 - include: memcached.yml
 - include: supervisor.yml
-- include: nginx.yml
 - include: logrotate.yml

@@ -5,3 +5,6 @@ if [ -n "$BASH_VERSION" ]; then
         . "$HOME/.bashrc"
     fi
 fi
+
+export WORKON_HOME=~/env
+source /usr/local/bin/virtualenvwrapper.sh

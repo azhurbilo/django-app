@@ -11,6 +11,16 @@
         state=directory
         mode=755
 
+- name: nginx | create media and static folder
+  file: path={{ item }}
+        state=directory
+        owner={{app_user}}
+        group={{app_user}}
+        mode=744
+  with_items:
+    - '{{ nginx_static_dir }}'
+    - '{{ nginx_media_dir }}'
+
 - name: nginx | create the Nginx configuration file
   template: src=nginx/nginx_site_config.j2
             dest=/etc/nginx/sites-available/{{ django_application_name }}

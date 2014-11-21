@@ -10,6 +10,8 @@ django_app_role_required_vars:
 ENV:
   DJANGO_SETTINGS_MODULE: '{{django_application_name}}.settings'
 
+python_version: '3'
+
 db_engine: 'mysql'
 
 # User
@@ -45,5 +47,5 @@ nginx_https_port: 443
 # nginx automatically add logrotate rule >> /var/log/nginx/*.log
 nginx_access_log: '/var/log/nginx/{{django_application_name}}_access.log'
 nginx_error_log: '/var/log/nginx/{{django_application_name}}_error.log'
-nginx_static_dir: '{{ project_path }}/static/'
-nginx_media_dir: '/mnt/{{django_application_name}}/media'
+nginx_static_dir: '/media/{{django_application_name}}/static/'
+nginx_media_dir: '/media/{{django_application_name}}/media/'

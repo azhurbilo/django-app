@@ -27,6 +27,17 @@ Requirements
 - [Vagrant](http://www.vagrantup.com/downloads.html)
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
+Dependencies
+------------
+
+- [zhurbilo.base-ubuntu](https://galaxy.ansible.com/list#/roles/2046)
+
+For installing this roles run:
+    
+    ansible-galaxy install -r ansible_requirements.txt --force
+    
+`ansible_requirements.txt` contains roles with its versions, which should be uploaded from ansible-galaxy (github).
+
 Usage
 ------------
 To set up you new application environment run:
@@ -58,17 +69,6 @@ Of course you can run ansible and vagrant commands separately, that is more flex
 Note: I don't use `vagrant ansible provisioner`, which do provisioning with one command `vagrant up`, but it complicates the usage of ansible.
 In my opinion the provisiong way of you local virtual machine or EC2 Amazon instance should be the same.
 
-
-Dependencies
-------------
-
-- [zhurbilo.base-ubuntu](https://galaxy.ansible.com/list#/roles/2046)
-
-For installing this roles run:
-    
-    ansible-galaxy install -r ansible_requirements.txt --force
-    
-`ansible_requirements.txt` contains roles with its versions, which should be uploaded from ansible-galaxy (github).
 
 
 Example Playbook

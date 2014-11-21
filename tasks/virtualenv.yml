@@ -6,12 +6,11 @@
     - virtualenv
     - virtualenvwrapper
 
-- name: virtualenv | add .bashrc to run virtualenvwrapper
+- name: virtualenv | add .profile to run virtualenvwrapper
   sudo_user: '{{ app_user }}'
   template: src=user/{{item}} dest=~/{{item}}
   with_items:
     - .profile
-    - .bashrc
 
 - name: virtualenv | create the virtualenv
   sudo_user: '{{ app_user }}'
