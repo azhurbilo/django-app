@@ -1,10 +1,9 @@
 #!/bin/sh
 
+set -ev
 
 if [ "$1" = "vagrant" ]
   then
-    set -e
-
     echo "Vagrant..."
     INVENTORY_FILE=vagrant-inventory
     vagrant up
