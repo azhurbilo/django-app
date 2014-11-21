@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ev
+set -e
 
 if [ "$1" = "vagrant" ]
   then
