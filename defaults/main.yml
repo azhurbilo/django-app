@@ -1,12 +1,6 @@
 ---
 # defaults file for django-app
 
-django_app_role_required_vars:
-  - django_app_git_url
-  - django_application_name
-  - django_app_git_private_key
-  - django_app_site_url
-
 ENV:
   DJANGO_SETTINGS_MODULE: '{{django_application_name}}.settings'
 
