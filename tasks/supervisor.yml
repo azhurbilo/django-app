@@ -6,7 +6,7 @@
         state=directory
 
 - name: supervisor | install supervisor
-  pip: name=supervisor state=latest
+  pip: name=supervisor state=present
 
 - name: supervisor | add supervisord init script
   template: src=supervisor/supervisord_init.j2
