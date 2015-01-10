@@ -30,6 +30,11 @@ ansible-playbook -i ${INVENTORY_FILE} playbook.yml --syntax-check
 echo ">>> Step 3: run the role/playbook with ansible-playbook"
 ansible-playbook -i ${INVENTORY_FILE} playbook.yml
 
+if [ "$2" = "skip" ]
+  then
+    exit 0
+fi
+
 # Step 4:
 echo ">>> Step 4: run the role/playbook again, checking to make sure it's idempotent."
 echo ">>> Ansible..."

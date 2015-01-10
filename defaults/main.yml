@@ -41,5 +41,5 @@ nginx_https_port: 443
 # nginx automatically add logrotate rule >> /var/log/nginx/*.log
 nginx_access_log: '/var/log/nginx/{{django_application_name}}_access.log'
 nginx_error_log: '/var/log/nginx/{{django_application_name}}_error.log'
-nginx_static_dir: '/media/{{django_application_name}}/static/'
-nginx_media_dir: '/media/{{django_application_name}}/media/'
+nginx_static_dir: '/media/{{django_application_name}}/static'
+nginx_media_dir: '/media/{{django_application_name}}/media'

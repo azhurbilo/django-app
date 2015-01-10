@@ -7,7 +7,7 @@ server {
     error_log {{ nginx_error_log }};
 
     location /static/ {
-        alias   {{ nginx_static_dir }};
+        alias   {{ nginx_static_dir }}/;
         add_header Vary Accept-Encoding;
         access_log off;
         gzip_static on;

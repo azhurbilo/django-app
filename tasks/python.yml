@@ -5,6 +5,7 @@
   with_items:
     - python
     - python-dev
+    - python3-dev
     - python-software-properties
     - python-pip
     - libmysqlclient-dev
@@ -17,7 +18,6 @@
     - mysql-client
 
 - name: python | update pip
-  pip: name={{item}} state=latest
+  pip: name={{item.name}} version={{item.version}} state=present
   with_items:
-    - pip
-    - setuptools
+    - { name: 'pip', version: 1.5.6 }
