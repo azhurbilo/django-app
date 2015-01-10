@@ -6,7 +6,7 @@
 django-app (Ansible role)
 =========
 
-Role was tested with Ansible version 1.7 and Ubuntu 14.04 LTS (Trusty Tahr)
+Role was tested with Ansible version 1.8.2 and Ubuntu 14.04 LTS (Trusty Tahr) and 12.04 LTS
 
 Ansible role to setup new django-project or deploy django project from git repo. There is a stack of tools using with django:
 
