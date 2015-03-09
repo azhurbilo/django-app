@@ -8,7 +8,6 @@
     - python3-dev
     - python-software-properties
     - python-pip
-    - libmysqlclient-dev
     - libxml2
     - libxml2-dev
     - libxslt1-dev
@@ -21,3 +20,11 @@
   pip: name={{item.name}} version={{item.version}} state=present
   with_items:
     - { name: 'pip', version: 1.5.6 }
+
+- name: python | install mysql packages
+  apt: name={{item}} state=present
+  with_items:
+    - libmysqlclient-dev
+    - mysql-client
+    - python-mysqldb
+  when: django_db_engine == 'mysql'

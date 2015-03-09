@@ -6,11 +6,11 @@ python: "2.7"
 before_install:
   # Make sure everything's up to date.
   - sudo apt-get update -qq
-  - touch ~/.ssh/github
+  - touch ~/.ssh/id_rsa
 
 install:
   # Install Ansible.
-  - pip install ansible==1.8.2
+  - pip install ansible==1.8.4
 
 script:
   - ./build.sh local

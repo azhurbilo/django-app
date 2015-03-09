@@ -2,7 +2,7 @@
 
 - name: base | create supervisor log folder
   file: path={{ supervisor_log_dir }}
-        mode=755
+        mode=754
         state=directory
 
 - name: supervisor | install supervisor
@@ -11,7 +11,7 @@
 - name: supervisor | add supervisord init script
   template: src=supervisor/supervisord_init.j2
             dest=/etc/init.d/supervisord
-            mode=755
+            mode=750
   notify: add supervisord to autostart
 
 - name: supervisor | replace base supervisor config file

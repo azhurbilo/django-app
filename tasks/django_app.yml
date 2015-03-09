@@ -8,65 +8,65 @@
     git_is_not_used: "{{ not git_is_used | bool }}"
 
 - name: django | create project directory
-  file: path={{project_path}}
+  file: path={{django_project_path}}
         state=directory
-        owner={{ app_user }}
-        group={{ app_user }}
+        owner={{ django_app_user }}
+        group={{ django_app_user }}
 
 - name: django | add repo
-  sudo_user: '{{ app_user }}'
+  sudo_user: '{{ django_app_user }}'
   git: repo='{{django_app_git_url}}'
-       dest='{{project_path}}'
+       dest='{{django_project_path}}'
        ssh_opts='-o StrictHostKeyChecking=no'
-       version='{{git_branch_name}}'
+       version='{{django_git_branch_name}}'
   register: git_register_var
   notify: restart application
   when: git_is_used
 
 # version - can be a branch name, or a tag name.
 
-- name: django | check requirements.txt
-  shell: "echo 'Django==1.7.1' > {{ requirements_file }}"
+- name: django | create base requirements.txt with django
+  shell: "echo 'Django==1.7.1' > {{ django_requirements_file }}"
   args:
-    chdir: '{{ project_path }}'
-    creates: '{{ requirements_file }}'
+    chdir: '{{ django_project_path }}'
+    creates: '{{ django_requirements_file }}'
   when: git_is_not_used
 
 - name: django | install app requirements.txt
-  sudo_user: '{{ app_user }}'
-  pip: requirements={{requirements_file}}
-       virtualenv={{virtualenv_path}}
+  sudo_user: '{{ django_app_user }}'
+  pip: requirements={{ django_requirements_file }}
+       virtualenv={{ django_virtualenv_path }}
 
 - name: django | create new django project
-  sudo_user: '{{ app_user }}'
-  shell: "{{ virtualenv_path }}/bin/django-admin.py startproject {{ django_application_name }} {{ django_application_name }}"
+  sudo_user: '{{ django_app_user }}'
+  shell: "{{ django_virtualenv_path }}/bin/django-admin.py startproject {{ django_application_name }} {{ django_application_name }}"
   args:
-    chdir: '{{ app_user_home }}'
-    creates: '{{ project_path }}/{{ django_application_name }}/'
+    chdir: '{{ django_app_user_home }}'
+    creates: '{{ django_project_path }}/{{ django_application_name }}/'
   when: git_is_not_used
 
 - name: django | add STATIC_ROOT to django settings.py
-  lineinfile: dest={{application_path}}/settings.py
+  lineinfile: dest={{django_application_path}}/settings.py
               state=present
               regexp='^STATIC_ROOT'
               line="STATIC_ROOT = '{{ nginx_static_dir }}'"
   when: git_is_not_used
 
 - name: django | install latest version of pip packages
-  sudo_user: '{{ app_user }}'
-  pip: name={{item}} virtualenv={{virtualenv_path}} state=latest
+  sudo_user: '{{ django_app_user }}'
+  pip: name={{item}} virtualenv={{ django_virtualenv_path }} state=latest
   with_items:
     - setuptools
     - requests
     - ipython
 
-- name: django | run syncdb and migrate
+- name: django | run syncdb - migrate - collectstatic
   django_manage:
     command: '{{item}}'
-    app_path: '{{ project_path }}'
-    virtualenv: '{{ virtualenv_path }}'
+    app_path: '{{ django_project_path }}'
+    virtualenv: '{{ django_virtualenv_path }}'
   with_items:
      - syncdb
      - migrate
-     - collectstatic
+     - collectstatic --noinput
   environment: ENV

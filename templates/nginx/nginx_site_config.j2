@@ -27,20 +27,19 @@ server {
     location / {
 
         proxy_pass http://{{ gunicorn_bind_app }};
-        proxy_set_header X-Forwarded-Host $server_name;
+
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $server_name;
 
         client_max_body_size       100m;
         client_body_buffer_size    128k;
-
         client_body_temp_path      /tmp/client_body_temp;
 
         proxy_connect_timeout      60s;
         proxy_send_timeout         90s;
         proxy_read_timeout         120s;
-        # proxy_send_lowat           12000;
 
         proxy_buffer_size          4k;
         proxy_buffers              4 32k;
@@ -52,13 +51,13 @@ server {
     # Error pages
     error_page 500 502 503 504 /50x.html;
     location = /50x.html {
-        root {{ application_path }}/templates/;
+        root {{ django_application_path }}/templates/;
     }
 
     # Error pages
     error_page 404 /404.html;
     location = /404.html {
-        root {{ application_path }}/templates/;
+        root {{ django_application_path }}/templates/;
     }
 
 }

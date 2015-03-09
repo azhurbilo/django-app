@@ -81,7 +81,7 @@ File `playbook.yml` contains an example of how to use this role
   sudo: true
   vars:
     - django_app_git_url: 'git@github.com:azhurbilo/my-django-application.git'
-    - django_application_name: 'project01'
+    - django_application_name: 'project-name'
     - django_app_git_private_key: "{{ lookup('file', '~/.ssh/github') }}"
     - django_app_site_url: 'mysite.com'
   roles:
@@ -97,24 +97,10 @@ Role Variables
 --------------
 
 This role contains only "role defaults" variables, which are the most "defaulty" and lose in priority to everything.
-So we can reset parameters in any way. But some parameters are required and should be defined explicitly:
+So we can reset parameters in any way.
 
-- django_app_git_url
-- django_application_name
-- django_app_git_private_key
-- django_app_site_url
-
-`django_app_git_url` argument affects on our provisioning. 
-You can see this behaviour in ./tasks/main.yml
-
-    - include: django_app.yml
-      when: django_app_git_url != 'new'
-    
-    - include: new_django_app.yml
-      when: django_app_git_url == 'new'
-  
-If there is `new` value, script execute `django-admin.py startproject` and init new git repo here.
-
+`django_app_git_url` argument affects on our provisioning.
+If there is empty `` value, script execute `django-admin.py startproject` and init new git repo here.
 If we set `django_app_git_url: git@github.com:<user>/<app>.git`, our application repo will be downloaded, all packages in
 requirement.txt (pip) file will be installed and run some django commands like migrate or collectstatic.
 
@@ -127,4 +113,4 @@ BSD
 Author Information
 ------------------
 
-Role was created by [Artsiom Zhurbila](http://www.linkedin.com/in/zhurbila)
+Role was created by [Artem Zhurbila](http://www.linkedin.com/in/zhurbila)

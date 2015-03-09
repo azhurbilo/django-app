@@ -1,13 +1,6 @@
 ---
 # tasks file for django-app
 
-- assert:
-    that:
-      - django_app_git_url is defined
-      - django_application_name is defined
-      - django_app_git_private_key is defined
-      - django_app_site_url is defined
-
 - include: python.yml
 - include: user.yml
 - include: ssh.yml

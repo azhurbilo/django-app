@@ -4,7 +4,7 @@ import sys
 import multiprocessing
 
 def app_path():
-    path = '{{project_path}}'
+    path = '{{django_project_path}}'
     if path not in sys.path:
        sys.path.append(path)
 

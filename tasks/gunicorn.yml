@@ -3,16 +3,16 @@
 - name: gunicorn | create gunicorn log folder
   file: path={{ gunicorn_log_dir }}
         mode=755
-        owner={{app_user}}
-        group={{app_user}}
+        owner={{django_app_user}}
+        group={{django_app_user}}
         state=directory
 
 - name: gunicorn | ensure gunicorn is installed
-  sudo_user: '{{ app_user }}'
-  pip: virtualenv={{ virtualenv_path }} name=gunicorn
+  sudo_user: '{{ django_app_user }}'
+  pip: virtualenv={{ django_virtualenv_path }} name=gunicorn
 
 - name: gunicorn | create the Gunicorn script file
-  sudo_user: '{{ app_user }}'
+  sudo_user: '{{ django_app_user }}'
   template: src=gunicorn/gunicorn_start.py
             dest={{ gunicorn_run_script }}
             mode=755

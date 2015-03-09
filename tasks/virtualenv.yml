@@ -7,26 +7,26 @@
     - virtualenvwrapper
 
 - name: virtualenv | add .profile to run virtualenvwrapper
-  sudo_user: '{{ app_user }}'
+  sudo_user: '{{ django_app_user }}'
   template: src=user/{{item}} dest=~/{{item}}
   with_items:
     - .profile
 
 - name: virtualenv | create the virtualenv
-  sudo_user: '{{ app_user }}'
-  command: virtualenv {{ virtualenv_path }} --no-site-packages --python=/usr/bin/python3
-           creates={{ virtualenv_path }}/bin/activate
+  sudo_user: '{{ django_app_user }}'
+  command: virtualenv {{ django_virtualenv_path }} --python=/usr/bin/python3
+           creates={{ django_virtualenv_path }}/bin/activate
 
 - name: virtualenv | add virtualenv wrapper postactivate script
-  sudo_user: '{{ app_user }}'
+  sudo_user: '{{ django_app_user }}'
   template: src=virtualenv/postactivate.j2
-            dest={{ virtualenv_path }}/bin/postactivate
+            dest={{ django_virtualenv_path }}/bin/postactivate
             mode=640
 
 - name: virtualenv | ensure that permissions are set properly
-  file: path={{ virtualenv_path }}
-        owner={{ app_user }}
-        group={{ app_user }}
+  file: path={{ django_virtualenv_path }}
+        owner={{ django_app_user }}
+        group={{ django_app_user }}
         state=directory
 
 

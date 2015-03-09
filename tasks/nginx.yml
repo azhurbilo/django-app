@@ -3,20 +3,20 @@
 - name: nginx | install Nginx
   apt: name=nginx state=present
 
-- name: nginx | add www-data user to {{app_user}} group
-  user: name=www-data groups={{app_user}} append=yes
+- name: nginx | add www-data user to {{django_app_user}} group
+  user: name=www-data groups={{django_app_user}} append=yes
 
-- name: nginx | add read permissions for nginx logs to all users
+- name: nginx | create nginx log folder
   file: path=/var/log/nginx/
         state=directory
-        mode=755
+        mode=754
 
 - name: nginx | create media and static folder
   file: path={{ item }}
         state=directory
-        owner={{app_user}}
-        group={{app_user}}
-        mode=755
+        owner={{django_app_user}}
+        group={{django_app_user}}
+        mode=754
   with_items:
     - '{{ nginx_static_dir }}'
     - '{{ nginx_media_dir }}'

@@ -2,9 +2,9 @@
 
 
 [program:{{ django_application_name }}]
-command={{ virtualenv_path }}/bin/gunicorn -c {{ gunicorn_run_script }} wsgi:application
-directory={{ application_path }}
-user = {{ app_user }}
+command={{ django_virtualenv_path }}/bin/gunicorn -c {{ gunicorn_run_script }} wsgi:application
+directory={{ django_application_path }}
+user = {{ django_app_user }}
 autostart=True
 autorestart=True
 

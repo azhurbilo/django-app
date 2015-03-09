@@ -6,18 +6,26 @@ ENV:
 
 python_version: '3'
 
-db_engine: 'mysql'
-
 # User
-app_user: 'django'
-app_user_home: '/home/{{ app_user }}'
+django_app_user: 'django'
+django_app_user_home: '/home/{{ django_app_user }}'
+
+# Git
+django_app_git_url: ''
+django_app_git_private_key: ''
+django_git_branch_name: 'master'
 
 # Application settings.
-git_branch_name: 'master'
-virtualenv_path: '{{ app_user_home }}/env/{{ django_application_name }}'
-project_path: '{{ app_user_home }}/{{django_application_name}}'
-application_path: '{{ project_path }}/{{django_application_name}}'
-requirements_file: '{{ project_path }}/requirements.txt'
+django_application_name: 'example'
+django_virtualenv_root: '{{ django_app_user_home }}/env'
+django_virtualenv_path: '{{ django_virtualenv_root }}/{{ django_application_name }}'
+django_project_path: '{{ django_app_user_home }}/{{django_application_name}}'
+django_application_path: '{{ django_project_path }}/{{django_application_name}}'
+django_requirements_file: '{{ django_project_path }}/requirements.txt'
+django_app_site_url: 'example.com'
+
+# Db (sqlite, postgresql, mysql)
+django_db_engine: 'sqlite'
 
 # Supervisor
 supervisor_log_dir: '/var/log/supervisor'
@@ -28,7 +36,7 @@ supervisor_app_access_log: "{{ supervisor_log_dir }}/{{django_application_name}}
 supervisor_app_error_log: "{{ supervisor_log_dir }}/{{django_application_name}}_error.log"
 
 # Gunicorn
-gunicorn_run_script: '{{virtualenv_path}}/gunicorn_start.py'
+gunicorn_run_script: '{{django_virtualenv_path}}/gunicorn_start.py'
 gunicorn_bind_app: '127.0.0.1:8000'
 gunicorn_pid: '/tmp/{{django_application_name}}_gunicorn.pid'
 gunicorn_log_dir: '/var/log/gunicorn'

@@ -11,7 +11,7 @@ logfile_backups=10
 loglevel = info
 pidfile = {{ supervisor_pid }}
 nodaemon = false
-{#user = {{ app_user }}#}
+user = root
 identifier = supervisor
 
 [supervisorctl]

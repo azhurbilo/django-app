@@ -6,5 +6,5 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-export WORKON_HOME=~/env
+export WORKON_HOME={{ django_virtualenv_root }}
 source /usr/local/bin/virtualenvwrapper.sh
