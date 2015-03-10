@@ -28,3 +28,11 @@
     - mysql-client
     - python-mysqldb
   when: django_db_engine == 'mysql'
+
+- name: python | install postgresql packages
+  apt: name={{item}} state=present
+  with_items:
+    - python-psycopg2
+    - postgresql-client
+    - libpq-dev
+  when: django_db_engine == 'postgresql_psycopg2'

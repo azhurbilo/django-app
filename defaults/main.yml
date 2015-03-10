@@ -3,6 +3,12 @@
 
 ENV:
   DJANGO_SETTINGS_MODULE: '{{django_application_name}}.settings'
+  DB_ENGINE: '{{ django_db_engine }}'
+  DB_NAME: '{{ db_name }}'
+  DB_USER_NAME: '{{ db_user_name }}'
+  DB_USER_PASSWORD: '{{ db_user_password }}'
+  DB_HOST: '{{ db_host }}'
+  DB_PORT: '{{ db_port }}'
 
 python_version: '3'
 
@@ -24,8 +30,13 @@ django_application_path: '{{ django_project_path }}/{{django_application_name}}'
 django_requirements_file: '{{ django_project_path }}/requirements.txt'
 django_app_site_url: 'example.com'
 
-# Db (sqlite, postgresql, mysql)
-django_db_engine: 'sqlite'
+# Db (sqlite3, postgresql_psycopg2, mysql)
+django_db_engine: 'sqlite3'
+db_name: '{{ django_project_path }}/mydb.sqlite3'
+db_user_name: 'testuser'
+db_user_password: '12345'
+db_host: '127.0.0.1'
+db_port: ''
 
 # Supervisor
 supervisor_log_dir: '/var/log/supervisor'
